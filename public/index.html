@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PintarKuiz & Ruang TKA - Kuis Pelajaran Sekolah Indonesia</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+</head>
+<body>
+
+  <!-- ===================================================================
+       Top Navigation Bar
+       =================================================================== -->
+  <header class="app-navbar">
+    <div class="navbar-container">
+      <!-- Brand Logo -->
+      <div class="brand-wrapper" onclick="window.app.showView('view-dashboard')">
+        <div class="brand-icon-box">🎓</div>
+        <div class="brand-title-group">
+          <h1>PintarKuiz</h1>
+          <span>Kuis Pelajaran & Ruang TKA</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs">
+        <button class="nav-tab-btn active" data-view="view-dashboard">
+          <span>📚</span> Kuis Pelajaran
+        </button>
+        <button class="nav-tab-btn" data-view="view-tka">
+          <span>🎯</span> Ruang TKA
+        </button>
+        <button class="nav-tab-btn" data-view="view-history">
+          <span>📋</span> Histori Latihan
+        </button>
+      </nav>
+
+      <!-- Right Controls: Level Switcher & Settings -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- Level Switcher: SD, SMP, SMA -->
+        <div class="level-switch-group">
+          <button class="level-btn active" data-level="SD">SD</button>
+          <button class="level-btn" data-level="SMP">SMP</button>
+          <button class="level-btn" data-level="SMA">SMA</button>
+        </div>
+
+        <!-- AI Settings Button -->
+        <button class="settings-btn" id="btn-open-settings" title="Pengaturan AI & Internet">
+          ⚙️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================
+       Main Body Container
+       =================================================================== -->
+  <main class="main-wrapper">
+
+    <!-- ===============================================================
+         VIEW 1: DASHBOARD (Kuis Pelajaran Reguler)
+         =============================================================== -->
+    <section id="view-dashboard" class="app-view active">
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-header-row">
+          <div class="hero-avatar-box">📚</div>
+          <div class="hero-titles">
+            <h2 id="hero-level-title">Kuis Pelajaran SD</h2>
+            <p id="hero-level-desc">Latihan soal interaktif Kurikulum Merdeka & K13 (Kelas 1 - 6)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Welcome & Stats Card (Floating) -->
+      <div class="welcome-card">
+        <div class="welcome-header">
+          <div>
+            <h3>Halo, pejuang belajar! ✨</h3>
+            <p>Belajar sedikit demi sedikit, jadi makin siap menghadapi ujian.</p>
+          </div>
+          <span class="badge-home-study">Belajar di rumah</span>
+        </div>
+
+        <!-- Stats 3-Grid (Matching Screenshot 2) -->
+        <div class="stats-grid">
+          <div class="stat-item-box">
+            <span class="stat-number" id="dash-stat-completed">0</span>
+            <span class="stat-label">Latihan selesai</span>
+          </div>
+          <div class="stat-item-box">
+            <span class="stat-number" id="dash-stat-avg">0</span>
+            <span class="stat-label">Rata-rata nilai</span>
+          </div>
+          <div class="stat-item-box">
+            <span class="stat-number" id="dash-stat-best">0</span>
+            <span class="stat-label">Nilai terbaik</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade & Question Count Settings Bar -->
+      <div class="quiz-options-bar">
+        <div class="options-bar-section">
+          <div class="options-group-label">
+            <span>🏫 Pilih Tingkat Kelas:</span>
+          </div>
+          <div class="grade-selector-pills" id="dashboard-grade-selector">
+            <!-- Dynamically populated e.g. Kelas 1-6 SD, 7-9 SMP, 10-12 SMA -->
+          </div>
+        </div>
+
+        <div class="options-bar-section">
+          <div class="options-group-label">
+            <span>⚙️ Jumlah Soal:</span>
+          </div>
+          <div class="count-selector-pills">
+            <button class="count-pill" data-count="10" data-time="15">10 Soal (15m)</button>
+            <button class="count-pill" data-count="20" data-time="30">20 Soal (30m)</button>
+            <button class="count-pill active" data-count="30" data-time="45">30 Soal (45m)</button>
+            <button class="count-pill" data-count="40" data-time="60">40 Soal (60m)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Title -->
+      <div class="section-header-block">
+        <h3>Pilih mata pelajaran</h3>
+        <p id="dashboard-notice-text">Setiap latihan berisi 30 soal pilihan ganda. Waktu pengerjaan 45 menit.</p>
+      </div>
+
+      <!-- Subjects Grid -->
+      <div class="subjects-grid" id="dashboard-subjects-grid">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         VIEW 2: RUANG TKA (Tes Kemampuan Akademik - Screenshot 2)
+         =============================================================== -->
+    <section id="view-tka" class="app-view">
+      <!-- Hero Banner (Matching Screenshot 2) -->
+      <div class="hero-banner">
+        <div class="hero-header-row">
+          <div class="hero-avatar-box">🎓</div>
+          <div class="hero-titles">
+            <h2 id="tka-level-title">Ruang TKA</h2>
+            <p id="tka-level-desc">Tempat latihan seru untuk siswa kelas 6 SD/MI</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Welcome Card (Matching Screenshot 2) -->
+      <div class="welcome-card">
+        <div class="welcome-header">
+          <div>
+            <h3>Halo, pejuang TKA! ✨</h3>
+            <p>Belajar sedikit demi sedikit, jadi makin siap.</p>
+          </div>
+          <span class="badge-home-study">Belajar di rumah</span>
+        </div>
+
+        <!-- 3 Metric Cards (Matching Screenshot 2: 25, 49, 100) -->
+        <div class="stats-grid">
+          <div class="stat-item-box">
+            <span class="stat-number" id="tka-stat-completed">0</span>
+            <span class="stat-label">Latihan selesai</span>
+          </div>
+          <div class="stat-item-box">
+            <span class="stat-number" id="tka-stat-avg">0</span>
+            <span class="stat-label">Rata-rata nilai</span>
+          </div>
+          <div class="stat-item-box">
+            <span class="stat-number" id="tka-stat-best">0</span>
+            <span class="stat-label">Nilai terbaik</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade & Question Count Settings Bar for TKA -->
+      <div class="quiz-options-bar">
+        <div class="options-bar-section">
+          <div class="options-group-label">
+            <span>🏫 Target Kelas TKA:</span>
+          </div>
+          <div class="grade-selector-pills" id="tka-grade-selector">
+            <!-- Dynamically populated e.g. Kelas 1-6 SD, 7-9 SMP, 10-12 SMA -->
+          </div>
+        </div>
+
+        <div class="options-bar-section">
+          <div class="options-group-label">
+            <span>⚙️ Jumlah Soal TKA:</span>
+          </div>
+          <div class="count-selector-pills">
+            <button class="count-pill" data-count="10" data-time="15">10 Soal (15m)</button>
+            <button class="count-pill" data-count="20" data-time="30">20 Soal (30m)</button>
+            <button class="count-pill active" data-count="30" data-time="45">30 Soal (45m)</button>
+            <button class="count-pill" data-count="40" data-time="60">40 Soal (60m)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Title -->
+      <div class="section-header-block">
+        <h3>Pilih modul TKA</h3>
+        <p id="tka-notice-text">Setiap latihan berisi 30 soal pilihan ganda. Waktu pengerjaan 45 menit.</p>
+      </div>
+
+      <!-- TKA Subjects Grid -->
+      <div class="subjects-grid" id="tka-subjects-grid">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         VIEW 3: ACTIVE QUIZ TEST (Exact Match Screenshot 1)
+         =============================================================== -->
+    <section id="view-quiz" class="app-view">
+      <div class="quiz-container">
+        <!-- Main Question Card -->
+        <div class="quiz-main-card">
+          <!-- Top Row: Subject Pill Badge & Timer Pill -->
+          <div class="quiz-top-row">
+            <div class="subject-pill-badge" id="quiz-subject-pill">
+              Matematika
+            </div>
+            <div class="timer-pill" id="quiz-timer-display">
+              45:00
+            </div>
+          </div>
+
+          <!-- Counter Subtitle: "Soal 1 dari 30" -->
+          <div class="quiz-counter-title" id="quiz-question-counter">
+            Soal 1 dari 30
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="quiz-progress-bar-wrap">
+            <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+          </div>
+
+          <!-- Question Body Text -->
+          <div class="question-body-text" id="quiz-question-text">
+            Bentuk desimal dari 7/20 adalah ...
+          </div>
+
+          <!-- Options List (A, B, C, D, [E]) -->
+          <div class="options-list" id="quiz-options-container">
+            <!-- Dynamic option items -->
+          </div>
+
+          <!-- Instant Feedback Card (Kunci Jawaban & Pembahasan Langsung) -->
+          <div id="quiz-instant-feedback" style="display: none;"></div>
+
+          <!-- Navigation Action Bar -->
+          <div class="quiz-action-bar">
+            <button class="btn-secondary" id="quiz-btn-prev">
+              &larr; Sebelumnya
+            </button>
+
+            <button class="btn-flag" id="quiz-btn-flag" title="Tandai ragu-ragu untuk ditinjau lagi">
+              🚩 Ragu-ragu
+            </button>
+
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-primary" id="quiz-btn-next">
+                Berikutnya &rarr;
+              </button>
+              <button class="btn-finish" id="quiz-btn-submit" style="display: inline-flex;">
+                Selesai ✓
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Question Number Grid (1 to 30 from Screenshot 1) -->
+        <div class="question-grid-card">
+          <div class="question-grid-title">
+            <span>Daftar Nomor Soal:</span>
+            <span style="font-size: 0.78rem; font-weight: 500;">
+              🟣 Terjawab &nbsp;|&nbsp; ⭕ Sedang Aktif &nbsp;|&nbsp; 🟡 Ragu-ragu
+            </span>
+          </div>
+          <div class="question-grid-wrap" id="quiz-number-grid">
+            <!-- 1..30 grid buttons dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         VIEW 4: RESULTS & EXPLANATION (Pembahasan Lengkap)
+         =============================================================== -->
+    <section id="view-results" class="app-view">
+      <div class="quiz-container">
+        <div class="result-card">
+          <span class="result-badge-top" id="result-level-tag">SD - Matematika</span>
+          <h2 id="result-title-text">Luar Biasa, Sempurna! 🏆</h2>
+          <p class="subtitle">Latihan telah berhasil diselesaikan dan dicatat ke histori.</p>
+
+          <!-- Circular Score Display -->
+          <div class="score-display-circle">
+            <span class="score-value" id="result-score-value">100</span>
+            <span class="score-scale">dari 100</span>
+          </div>
+
+          <!-- Breakdown 4-Boxes -->
+          <div class="result-breakdown-row">
+            <div class="breakdown-box correct">
+              <div class="val" id="res-correct-count">30</div>
+              <div class="lbl">Benar</div>
+            </div>
+            <div class="breakdown-box wrong">
+              <div class="val" id="res-wrong-count">0</div>
+              <div class="lbl">Salah</div>
+            </div>
+            <div class="breakdown-box unanswered">
+              <div class="val" id="res-empty-count">0</div>
+              <div class="lbl">Dilewati</div>
+            </div>
+            <div class="breakdown-box time">
+              <div class="val" id="res-time-spent">12m 40s</div>
+              <div class="lbl">Waktu Terpakai</div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="result-actions-row">
+            <button class="btn-primary" id="btn-result-repeat">
+              🔄 Ulangi Latihan dengan Soal Baru
+            </button>
+            <button class="btn-secondary" id="btn-result-home">
+              🏠 Kembali ke Beranda
+            </button>
+            <button class="btn-secondary" onclick="window.print()">
+              🖨️ Cetak Hasil
+            </button>
+          </div>
+        </div>
+
+        <!-- Pembahasan Soal Terperinci -->
+        <div class="review-section">
+          <h3>📖 Pembahasan Lengkap Setiap Soal</h3>
+          <div id="result-review-list">
+            <!-- List of question reviews with step-by-step solutions -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         VIEW 5: HISTORY & PROGRESS
+         =============================================================== -->
+    <section id="view-history" class="app-view">
+      <div class="hero-banner" style="padding: 24px 28px 40px; margin-bottom: 24px;">
+        <div class="hero-header-row" style="margin-bottom: 0;">
+          <div class="hero-avatar-box">📋</div>
+          <div class="hero-titles">
+            <h2>Histori & Kemajuan Belajar</h2>
+            <p>Lihat kembali riwayat nilai, statistik, dan pembahasan soal yang pernah kamu kerjakan.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Controls Bar -->
+      <div class="history-controls-bar">
+        <div class="options-group-label">
+          <span>Riwayat Latihan Tersimpan:</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button class="btn-secondary" id="btn-export-history" style="padding: 8px 16px; font-size: 0.85rem;">
+            📥 Ekspor JSON
+          </button>
+
+          <!-- Tombol Reset Histori Utama di Tab Histori -->
+          <button type="button" class="btn-secondary" id="btn-reset-history-main" style="padding: 8px 16px; font-size: 0.85rem; color: #DC2626; border: 1.5px solid #FECACA; background: #FFF5F5; font-weight: 700; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="Reset seluruh riwayat latihan">
+            🗑️ Reset Histori
+          </button>
+        </div>
+      </div>
+
+      <!-- History Records List -->
+      <div class="history-list" id="history-records-list">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="history-empty-state" style="display: none;">
+        <div class="icon">📝</div>
+        <h4>Belum Ada Riwayat Latihan</h4>
+        <p>Ayo mulai kerjakan kuis pelajaran atau modul TKA untuk melihat perkembangan nilaimu di sini!</p>
+        <button class="btn-primary" onclick="window.app.showView('view-dashboard')">
+          Mulai Latihan Sekarang
+        </button>
+      </div>
+
+      <!-- Subtle Hidden Reset Pill in Footer -->
+      <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button type="button" id="btn-reset-history-subtle" style="background: #F8FAFC; border: 1px solid #CBD5E1; color: #64748B; font-size: 0.82rem; font-weight: 600; padding: 8px 20px; border-radius: 9999px; cursor: pointer;">
+          🗑️ Reset Seluruh Riwayat Latihan
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================
+       MODAL: Submit Confirmation
+       =================================================================== -->
+  <div class="modal-overlay" id="modal-submit-confirm">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Konfirmasi Selesai Ujian</h3>
+        <button class="modal-close-btn" id="btn-cancel-submit">&times;</button>
+      </div>
+      <p id="submit-confirm-summary" style="font-size: 0.95rem; color: #334155; line-height: 1.6; margin-bottom: 24px;">
+        Apakah Anda yakin ingin menyelesaikan kuis ini?
+      </p>
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn-secondary" onclick="document.getElementById('modal-submit-confirm').classList.remove('active')">
+          Lanjut Mengerjakan
+        </button>
+        <button class="btn-primary" id="btn-confirm-submit">
+          Ya, Kumpulkan Jawaban
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MODAL: AI & Internet Generator Settings
+       =================================================================== -->
+  <div class="modal-overlay" id="modal-settings">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Pengaturan AI & Internet</h3>
+        <button class="modal-close-btn" id="btn-close-settings">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="input-gemini-key">
+          Google Gemini API Key (Opsional / Gratis)
+        </label>
+        <input type="password" id="input-gemini-key" class="form-input" placeholder="AIzaSy...">
+        <p class="form-hint">
+          Dapatkan API Key <strong>100% Gratis</strong> tanpa kartu kredit di
+          <a href="https://aistudio.google.com/" target="_blank" style="color: #4F46E5; font-weight: 700;">Google AI Studio</a>.
+          Bila dikosongkan, aplikasi akan otomatis menggunakan <em>Smart Dynamic Procedural AI Generator</em> yang menghasilkan ribuan variasi soal kurikulum secara acak dan bebas hardcode!
+        </p>
+      </div>
+
+      <div class="form-group">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+          <label class="form-label" for="select-gemini-model" style="margin-bottom: 0;">Pilihan Model AI</label>
+          <button type="button" id="btn-detect-models" class="btn-secondary" style="padding: 4px 12px; font-size: 0.78rem; font-weight: 700; color: #4F46E5; border: 1px solid #C7D2FE;">
+            🔍 Deteksi Model Aktif di Akun
+          </button>
+        </div>
+        <select id="select-gemini-model" class="form-input">
+          <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+          <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+          <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+          <option value="gemini-3.8-flash">Gemini 3.8 Flash (Server Google Sedang High Demand)</option>
+        </select>
+        <p class="form-hint" id="model-detection-hint" style="margin-top: 8px; font-size: 0.8rem; color: #4F46E5; background: #EEF2FF; padding: 8px 12px; border-radius: 8px; border: 1px solid #C7D2FE;">
+          💡 <strong>Tips:</strong> Klik tombol <strong>Deteksi Model Aktif di Akun</strong> untuk memindai otomatis seluruh daftar model resmi yang saat ini aktif di Google AI Studio untuk key Anda.
+        </p>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <button type="button" class="btn-secondary" id="btn-test-api" style="padding: 8px 16px; font-size: 0.85rem;">
+          ⚡ Uji Koneksi API
+        </button>
+        <span id="api-test-status" style="font-size: 0.82rem; font-weight: 600;"></span>
+      </div>
+
+      <!-- Pengaturan Reset History (Lokasi Aman & Terstruktur) -->
+      <div style="margin-top: 18px; border-top: 1px solid #E2E8F0; padding-top: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #FFF1F2; border: 1.5px solid #FECDD3; border-radius: 10px; padding: 12px 16px;">
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 700; color: #9F1239;">🗑️ Reset Seluruh Riwayat Latihan</div>
+            <div style="font-size: 0.78rem; color: #BE123C; margin-top: 2px;">Menghapus semua histori skor dan catatan latihan di perangkat ini.</div>
+          </div>
+          <button type="button" id="btn-reset-history-modal" style="background: #E11D48; color: white; border: none; padding: 8px 16px; font-size: 0.82rem; font-weight: 700; border-radius: 8px; cursor: pointer; white-space: nowrap;">
+            Reset Data
+          </button>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #E2E8F0; padding-top: 18px; margin-top: 18px;">
+        <button class="btn-secondary" onclick="document.getElementById('modal-settings').classList.remove('active')">
+          Batal
+        </button>
+        <button class="btn-primary" id="btn-save-settings">
+          Simpan Pengaturan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       LOADING OVERLAY
+       =================================================================== -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+    <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 8px;">Sedang Membuat Soal...</h3>
+    <p id="loading-status-text" style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
+      Menyiapkan soal ujian yang segar dan acak dari AI...
+    </p>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/curriculum.js"></script>
+  <script src="js/ai-generator.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/quiz-engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
